@@ -1,0 +1,60 @@
+server:
+  port:
+    8181
+    
+spring:
+  application:
+    name: API-GATEWAY
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+        - id: DETAIL-SERVICE
+          uri:  lb://DETAIL-SERVICE
+          predicates:
+            - Path=/details/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: DETAIL-SERVICE
+                fallbackuri: forward:/detailServiceFallback
+        - id: PRODUCT-SERVICE
+          uri:  lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: PRODUCT-SERVICE
+                fallbackuri: forward:/productServiceFallback
+        - id: USER-SERVICE
+          uri:  lb://USER-SERVICE
+          predicates:
+            - Path=/products/**
+   
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 4000
+            
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream 
+    
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    
+    

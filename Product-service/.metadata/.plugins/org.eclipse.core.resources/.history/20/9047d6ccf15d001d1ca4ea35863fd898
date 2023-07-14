@@ -1,0 +1,29 @@
+package com.nagarro.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nagarro.VO.ResponseTemplateVO;
+import com.nagarro.entity.Product;
+import com.nagarro.repository.ProductRepository;
+
+@Service
+public class ProductService {
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	public Product saveProduct(Product product) {
+		// TODO Auto-generated method stub
+		return productRepository.save(product);
+	}
+
+	public ResponseTemplateVO getProductWithDetail(Long prodId) {
+		// TODO Auto-generated method stub
+		ResponseTemplateVO vo=new ResponseTemplateVO();
+		Product product=productRepository.findByProdId(prodId); 
+		
+//		return productRepository.;
+		return null;
+	}
+}

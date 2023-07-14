@@ -1,0 +1,33 @@
+server:
+  port:
+    8181
+    
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: DETAIL-SERVICE
+          uri:  lb://DETAIL-SERVICE
+          predicates:
+            - Path=/details/**
+        - id: PRODUCT-SERVICE
+          uri:  lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**
+          filters:
+            - name:CircuitBreaker
+              args:
+                name: PRODUCT-SERVICE
+                fallbackuri: forward:/detailServiceFallback
+    
+    
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  http://localhost:8761/eureka/
+  instance:
+    hostname: localhost

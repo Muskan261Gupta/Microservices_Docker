@@ -1,0 +1,23 @@
+server:
+  port:
+    8181
+    
+spring:
+  application:
+    name: API-GATEWAY
+  
+            
+zuul:
+  routes:
+    DETAIL-SERVICE:
+      path: /details/**
+      service-id: DETAIL-SERVICE 
+    PRODUCT-SERVICE:
+      path: /products/**
+      service-id: PRODUCT-SERVICE 
+      
+    
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8761/eureka/

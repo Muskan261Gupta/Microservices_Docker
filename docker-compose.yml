@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  admin-service:
+    container_name: admin-service
+    build:  
+      context:  .
+      dockerfile: ./admin-service/admin-service/Dockerfile
+    ports:
+      - "8084:8084"
+    image:  admin-service:latest
+  api-gateway:
+    container_name: api-gateway
+    build:  
+      context:  .
+      dockerfile: ./api-gateway/api-gateway/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8181:8181"
+    image:  api-gateway:latest
+  user-service:
+    container_name: user-service
+    build:  
+      context:  .
+      dockerfile: ./user-service/user-service/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8083:8083"
+    image:  user-service:latest
+  product-service:
+    container_name: product-service
+    build:  
+      context:  .
+      dockerfile: ./product-service/product-service/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8082:8082"
+    image:  product-service:latest
+  detail-service:
+    container_name: detail-service
+    build:  
+      context:  .
+      dockerfile: ./detail-service/detail-service/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8081:8081"
+    image:  detail-service:latest
+  hystrix-dashboard:
+    container_name: hystrix-dashboard
+    build:  
+      context:  .
+      dockerfile: ./hystrix-dashboard/hystrix-dashboard/Dockerfile
+    ports:
+      - "9000:9000"
+    image:  hystrix-dashboard:latest
+  eureka-server:
+    container_name: eureka-server
+    build:  
+      context:  .
+      dockerfile: ./eureka-server/deureka-server/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8761:8761"
+    image:  eureka-server:latest

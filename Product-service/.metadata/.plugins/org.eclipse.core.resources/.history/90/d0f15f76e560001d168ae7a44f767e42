@@ -1,0 +1,42 @@
+package com.nagarro.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.nagarro.VO.ProductDetails;
+import com.nagarro.VO.ResponseTemplateVO;
+import com.nagarro.entity.Product;
+import com.nagarro.repository.ProductRepository;
+
+@Service
+public class ProductService {
+
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+
+	public Product saveProduct(Product product) {
+		// TODO Auto-generated method stub
+		return productRepository.save(product);
+	}
+
+	public ResponseTemplateVO getProductWithDetail(Long prodId) {
+		// TODO Auto-generated method stub
+		ResponseTemplateVO vo=new ResponseTemplateVO();
+		Product product=productRepository.findByProdId(prodId); 
+		ProductDetails productDetails= restTemplate.getForObject("http://DETAIL-SERVICE/details/"+product.getDetailId(), ProductDetails.class);
+		vo.setProduct(product);
+		vo.setProductDetails(productDetails);
+		return vo;
+	}
+
+	public List<Product> getAllDetails() {
+		// TODO Auto-generated method stub
+		return productRepository.findAll();
+	}
+}

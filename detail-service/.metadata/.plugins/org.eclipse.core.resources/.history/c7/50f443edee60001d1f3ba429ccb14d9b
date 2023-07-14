@@ -1,0 +1,7 @@
+FROM openjdk:11
+
+MAINTAINER muskan.gupta@nagarro.com
+EXPOSE 8081
+WORKDIR /
+ADD target/detail-service.jar detail-service.jar
+ENTRYPOINT ["java","-jar","/detail-service.jar"]
